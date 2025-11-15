@@ -1,0 +1,23 @@
+[package]
+name = "rustyline_repro"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "rustyline_repro"
+path = "src/main.rs"
+
+[[bin]]
+name = "instrumented_test"
+path = "src/instrumented_test.rs"
+
+[[bin]]
+name = "unused_editor_test"
+path = "src/unused_editor_test.rs"
+
+[dependencies]
+# Testing with commit dcc71b1 - BEFORE the fix
+# This is the old code that should crash
+rustyline = { git = "https://github.com/kkawakam/rustyline.git", rev = "dcc71b1" }
+nix = { version = "0.30", features = ["signal"] }
+libc = "0.2"

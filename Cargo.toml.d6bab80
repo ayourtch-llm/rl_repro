@@ -1,0 +1,23 @@
+[package]
+name = "rustyline_repro"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "rustyline_repro"
+path = "src/main.rs"
+
+[[bin]]
+name = "instrumented_test"
+path = "src/instrumented_test.rs"
+
+[[bin]]
+name = "unused_editor_test"
+path = "src/unused_editor_test.rs"
+
+[dependencies]
+# Testing with commit d6bab80 which adds assertion for already-installed handler
+# This should fail IMMEDIATELY when creating nested editor
+rustyline = { git = "https://github.com/kkawakam/rustyline.git", rev = "d6bab80" }
+nix = { version = "0.30", features = ["signal"] }
+libc = "0.2"

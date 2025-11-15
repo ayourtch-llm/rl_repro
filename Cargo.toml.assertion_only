@@ -1,0 +1,23 @@
+[package]
+name = "rustyline_repro"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "rustyline_repro"
+path = "src/main.rs"
+
+[[bin]]
+name = "instrumented_test"
+path = "src/instrumented_test.rs"
+
+[[bin]]
+name = "unused_editor_test"
+path = "src/unused_editor_test.rs"
+
+[dependencies]
+# OLD CODE (dcc71b1) + ASSERTION from d6bab80
+# This should FAIL IMMEDIATELY when creating nested editor with clean error
+rustyline = { path = "/tmp/rustyline_assertion_only" }
+nix = { version = "0.30", features = ["signal"] }
+libc = "0.2"
