@@ -104,18 +104,30 @@ PR #903 fixes this by deferring signal handler installation until the editor is 
 
 **Latest Test Run:** 2025-11-15
 
-✅ Automated tests completed successfully with both versions:
-- rustyline v17.0.2 (WITHOUT PR #903): All tests passed
-- rustyline v17.0.1 (WITH PR #903): All tests passed
+**⚠️ COULD NOT REPRODUCE THE BUG**
 
-See [TEST_RESULTS.md](TEST_RESULTS.md) for detailed automated test results.
+Despite extensive testing including:
+- ✅ Signal delivery verification (SIGWINCH confirmed received)
+- ✅ Multiple timing scenarios (during active, after drop, with delays)
+- ✅ Stress testing (20+ iterations)
+- ✅ Unused editor scenario (specific PR #903 case)
+- ✅ Instrumented testing with custom signal handlers
 
-**Note:** The bug is non-deterministic and may require specific terminal conditions to reproduce. PR #903 is still recommended as it fixes the underlying race condition.
+**Result:** No crashes with either version in this environment.
+
+The bug from issue #902 likely requires:
+- Real TTY (not piped input)
+- Actual terminal resize events (not just SIGWINCH signals)
+- Specific OS/kernel conditions
+- Precise race condition timing
+
+**Recommendation:** Still use PR #903 - provides sound architectural improvements even though the crash couldn't be reproduced.
 
 ## Documentation
 
-- [TEST_RESULTS.md](TEST_RESULTS.md) - Automated test results and analysis
-- [PR903_TEST_RESULTS.md](PR903_TEST_RESULTS.md) - Comprehensive testing guide
+- [FINAL_TEST_REPORT.md](FINAL_TEST_REPORT.md) - Complete testing analysis and findings
+- [TEST_RESULTS.md](TEST_RESULTS.md) - Automated test results
+- [PR903_TEST_RESULTS.md](PR903_TEST_RESULTS.md) - Testing guide
 
 ## Contributing
 
