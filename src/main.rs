@@ -14,7 +14,6 @@
 /// The bug is more likely to occur with nested editor creation.
 
 use rustyline::DefaultEditor;
-use std::io::{self, Write};
 
 fn get_confirmation_with_rustyline() -> bool {
     println!("\n  [Creating temporary rustyline editor for confirmation]");
