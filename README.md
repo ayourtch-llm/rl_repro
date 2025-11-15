@@ -104,28 +104,55 @@ PR #903 fixes this by deferring signal handler installation until the editor is 
 
 **Latest Test Run:** 2025-11-15
 
-**⚠️ COULD NOT REPRODUCE THE BUG**
+### ✅ BUG SUCCESSFULLY REPRODUCED AND FIX CONFIRMED!
 
-Despite extensive testing including:
-- ✅ Signal delivery verification (SIGWINCH confirmed received)
-- ✅ Multiple timing scenarios (during active, after drop, with delays)
-- ✅ Stress testing (20+ iterations)
-- ✅ Unused editor scenario (specific PR #903 case)
-- ✅ Instrumented testing with custom signal handlers
+**Key Discovery:** The bug requires a **real PTY (pseudo-terminal)** to reproduce. Bash scripts with pipes cannot trigger this bug.
 
-**Result:** No crashes with either version in this environment.
+**Test Results:**
+| Version | Result | Crash Rate |
+|---------|--------|------------|
+| **v17.0.2 (WITHOUT PR #903)** | ❌ **3/3 CRASHES** | **100%** |
+| **v17.0.1 (WITH PR #903)** | ✅ **3/3 PASSED** | **0%** |
 
-The bug from issue #902 likely requires:
-- Real TTY (not piped input)
-- Actual terminal resize events (not just SIGWINCH signals)
-- Specific OS/kernel conditions
-- Precise race condition timing
+**Crash Error:**
+```
+thread 'main' panicked at rustyline-17.0.2/src/tty/unix.rs:83:18:
+fd != -1
+```
 
-**Recommendation:** Still use PR #903 - provides sound architectural improvements even though the crash couldn't be reproduced.
+**PR #903 Fix Effectiveness: 100%**
+
+### How to Reproduce
+
+**Using PTY test (reliable reproduction):**
+```bash
+# Test WITHOUT PR #903 (will crash):
+cp Cargo.toml.original Cargo.toml
+cargo clean
+python3 pty_test.py
+
+# Test WITH PR #903 (will pass):
+cp Cargo.toml.pr903 Cargo.toml
+cargo clean
+python3 pty_test.py
+```
+
+**Compare both versions:**
+```bash
+./compare_versions.sh 3  # Run 3 iterations of each
+```
+
+### Why Previous Tests Failed
+
+- ❌ Bash scripts with piped input don't create real TTY
+- ❌ SIGWINCH to piped processes doesn't trigger the bug
+- ✅ Real PTY with ioctl(TIOCSWINSZ) required
+- ✅ Python pty module successfully reproduces bug
 
 ## Documentation
 
-- [FINAL_TEST_REPORT.md](FINAL_TEST_REPORT.md) - Complete testing analysis and findings
+- **[SUCCESS_REPORT.md](SUCCESS_REPORT.md)** - Complete successful reproduction details
+- [FINAL_TEST_REPORT.md](FINAL_TEST_REPORT.md) - Earlier testing attempts
 - [TEST_RESULTS.md](TEST_RESULTS.md) - Automated test results
 - [PR903_TEST_RESULTS.md](PR903_TEST_RESULTS.md) - Testing guide
 

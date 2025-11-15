@@ -3,21 +3,7 @@ name = "rustyline_repro"
 version = "0.1.0"
 edition = "2024"
 
-[[bin]]
-name = "rustyline_repro"
-path = "src/main.rs"
-
-[[bin]]
-name = "instrumented_test"
-path = "src/instrumented_test.rs"
-
-[[bin]]
-name = "unused_editor_test"
-path = "src/unused_editor_test.rs"
-
 [dependencies]
 # Using PR #903 from gwenn's fork to test the SIGWINCH fix
 # PR: https://github.com/kkawakam/rustyline/pull/903
 rustyline = { git = "https://github.com/gwenn/rustyline.git", branch = "sigwinch" }
-nix = { version = "0.30", features = ["signal"] }
-libc = "0.2"
