@@ -1,0 +1,9 @@
+[package]
+name = "rustyline_repro"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# Using PR #903 from gwenn's fork to test the SIGWINCH fix
+# PR: https://github.com/kkawakam/rustyline/pull/903
+rustyline = { git = "https://github.com/gwenn/rustyline.git", branch = "sigwinch" }

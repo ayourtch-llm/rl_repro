@@ -100,9 +100,22 @@ The bug occurs because signal handlers installed during initialization remain ac
 
 PR #903 fixes this by deferring signal handler installation until the editor is actually used.
 
+## Test Results
+
+**Latest Test Run:** 2025-11-15
+
+✅ Automated tests completed successfully with both versions:
+- rustyline v17.0.2 (WITHOUT PR #903): All tests passed
+- rustyline v17.0.1 (WITH PR #903): All tests passed
+
+See [TEST_RESULTS.md](TEST_RESULTS.md) for detailed automated test results.
+
+**Note:** The bug is non-deterministic and may require specific terminal conditions to reproduce. PR #903 is still recommended as it fixes the underlying race condition.
+
 ## Documentation
 
-See [PR903_TEST_RESULTS.md](PR903_TEST_RESULTS.md) for comprehensive testing documentation.
+- [TEST_RESULTS.md](TEST_RESULTS.md) - Automated test results and analysis
+- [PR903_TEST_RESULTS.md](PR903_TEST_RESULTS.md) - Comprehensive testing guide
 
 ## Contributing
 
