@@ -3,7 +3,6 @@
 
 use rustyline::DefaultEditor;
 use std::sync::atomic::{AtomicU32, Ordering};
-use std::sync::Arc;
 
 static SIGWINCH_COUNT: AtomicU32 = AtomicU32::new(0);
 
